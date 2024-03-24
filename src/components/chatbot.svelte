@@ -170,9 +170,11 @@
                 return true;
 
             } else {
-                const { message: errorMessage } = await result.json() || {};
-                failure(errorMessage || "Ошибка сервера");
-                return false;
+                const response = await result.json();
+
+                if (!response.success) {
+                    failure(response.message);
+                }
             }
 
         } catch {
@@ -223,11 +225,16 @@
                 }
 
                 success('Схема успешно сохранена')
+            } else {
+                const result = await response.json();
 
+                if (!result.success) {
+                    failure(result.message);
+                    return;
+                }
             }
 
         } catch (e) {
-            console.warn(e);
             failure('Не удалось сохранить граф');
         }
     }
@@ -270,6 +277,13 @@
 
                 localStorage.setItem('schemas', JSON.stringify(schemas));
                 success('Схема успешно загружена');
+            } else {
+                const result = await response.json();
+
+                if (!result.success) {
+                    failure(result.message);
+                    return;
+                }
             }
         } catch (e) {
             console.warn(e);
