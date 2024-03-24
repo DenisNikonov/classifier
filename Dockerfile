@@ -1,4 +1,4 @@
-FROM node:20-alpine3.19
+FROM node:20-alpine3.19 as build
 
 RUN npm install -g pnpm
 
@@ -11,3 +11,9 @@ RUN pnpm install
 COPY . .
 
 RUN pnpm run build
+
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+CMD ["nginx", "-g", "daemon off;"]
