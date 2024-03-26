@@ -1,6 +1,7 @@
 <script lang="ts">
     import ClassifyInspector from './classify-inspector.svelte';
     import ExternalRequestInspector from './external-request-inspector.svelte';
+    import ResponseInspector from './response-inspector.svelte';
 
     import { Subscription } from 'rxjs';
     import { dia } from '@joint/plus';
@@ -32,9 +33,9 @@
     }
 </script>
 
-<div class="inspector-container" class:disabled-container={!curCell || curCell?.get('type') === shapeTypesEnum.FLOWCHART_START || curCell?.get('type') === shapeTypesEnum.FLOWCHART_END || curCell.get('type') === ShapeTypesEnum.MESSAGE}>
+<div class="inspector-container" class:disabled-container={!curCell || curCell?.get('type') === shapeTypesEnum.FLOWCHART_START || curCell?.get('type') === shapeTypesEnum.FLOWCHART_END || (curCell.get('type') === ShapeTypesEnum.MESSAGE && curCell.prop(['attrs', 'type', 'text']) !== 'respond')}>
     {#if curCell}
-            {#if curCell.get('type') === ShapeTypesEnum.FLOWCHART_START || curCell.get('type') === ShapeTypesEnum.FLOWCHART_END || curCell.get('type') === ShapeTypesEnum.MESSAGE}
+            {#if curCell.get('type') === ShapeTypesEnum.FLOWCHART_START || curCell.get('type') === ShapeTypesEnum.FLOWCHART_END || (curCell.get('type') === ShapeTypesEnum.MESSAGE && curCell.prop(['attrs', 'type', 'text']) !== 'respond') }
                 <div style="display: flex; flex:1; flex-direction: column; align-items: center; justify-content: center;">
                     <span style="color: #747474">Объект не имеет конфигурации</span>
                 </div>
@@ -42,6 +43,8 @@
                 <ClassifyInspector cell={curCell} />
             {:else if curCell.get('type') === shapeTypesEnum.EXTERNAL_REQUEST}
                 <ExternalRequestInspector cell={curCell} />
+            {:else if curCell.get('type') === shapeTypesEnum.MESSAGE && curCell.prop(['attrs', 'type', 'text']) === 'respond' }
+                <ResponseInspector cell={curCell} />
             {/if}
     {:else}
         <div style="display: flex; flex:1; flex-direction: column; align-items: center; color: #747474">

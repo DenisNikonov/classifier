@@ -110,6 +110,12 @@ const Base = dia.Element.define(
                 };
             }
 
+            if (attrs.type.text === "respond") {
+                attrs["response"] = {
+                    text: element.attr(["response", "text"]),
+                };
+            }
+
             return new this({ attrs });
         },
     }

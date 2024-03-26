@@ -236,6 +236,7 @@
 
         } catch (e) {
             failure('Не удалось сохранить граф');
+            console.warn(e);
         }
     }
 

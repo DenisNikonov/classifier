@@ -62,6 +62,9 @@ export const stencilConfig = {
                 type: "respond",
                 label: { text: "Ответить" },
                 icon: { xlinkHref: CONFIRMATION_ICON },
+                response: {
+                    text: "",
+                },
             },
         },
     ],

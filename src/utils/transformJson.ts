@@ -45,6 +45,12 @@ export const transformJson = (inputJson: any) => {
             };
         }
 
+        if (result.type === "respond") {
+            result.data = {
+                response: node.attrs.response.text,
+            };
+        }
+
         return result;
     });
 
